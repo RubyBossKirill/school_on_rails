@@ -13,6 +13,9 @@ gem 'redis'
 gem 'devise'
 gem 'devise-jwt'
 
+# rack
+gem 'rack-cors'
+
 # custom gems
 gem 'active_interaction'
 gem 'data_migrate'
