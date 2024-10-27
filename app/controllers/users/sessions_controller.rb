@@ -6,7 +6,7 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, opts = {})
-    token = request.env['warden-jwt-_auth.token']
+    token = request.env['warden-jwt_auth.token']
     headers['Authorization'] = token
     user = UserSerializer.new(resource).serializable_hash[:data][:attributes]
 
@@ -39,5 +39,10 @@ class Users::SessionsController < Devise::SessionsController
         message: 'Logged out failure'
       }, status: :unauthorized
     end
+  end
+
+  private
+
+  def authorize_user
   end
 end
