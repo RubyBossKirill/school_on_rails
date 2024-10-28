@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :event_params, only: %i[index show new create]
+  # :name, :description, :price, :category, :organization
   def index
   end
 
@@ -7,7 +7,22 @@ class EventsController < ApplicationController
   end
 
   def create
-    Events::Posts::Create.run(event_params)
+    outcome = params.require(:event).permit(:name, :description, :price, :category, :organization)
+    event = Events::Posts::Create.run(outcome)
+    if event.errors.any?
+      render json: {
+        status: {
+          message: "Event was failure created. #{event.errors.full_messages.join(', ')}"
+        }
+      }, status: :unprocessable_entity
+    else
+      render json: {
+        status: {
+          message: 'Event was successfully created.',
+          event_id: event.result.id
+        }
+      }, status: :ok
+    end
   end
 
   def edit
@@ -17,11 +32,5 @@ class EventsController < ApplicationController
   end
 
   def delete
-  end
-
-  private
-
-  def event_params
-    params.require(:event).permit(:name, :description, :price, :category, :organization)
   end
 end

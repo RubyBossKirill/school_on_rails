@@ -1,21 +1,13 @@
 # frozen_string_literal: true
 
 class Events::Posts::Create < ActiveInteraction::Base # rubocop:disable Style/ClassAndModuleChildren
-  def execute # rubocop:disable Metrics/MethodLength
-    event = Event.new(event_params)
+  string :name, :description, :category, :organization
+  float :price
 
-    if event.save
-      render json: {
-        status: {
-          message: 'Event was successfully created.'
-        }
-      }, status: :ok
-    else
-      render json: {
-        status: {
-          message: 'Event was failure created.'
-        }
-      }, status: :unprocessable_entity
-    end
+  def execute
+    event = Event.new(inputs)
+    return errors.merge!(event.errors) unless event.save
+
+    event
   end
 end
