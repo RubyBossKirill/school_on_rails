@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class Users::SessionsController < Devise::SessionsController
+class Users::SessionsController < Devise::SessionsController # rubocop:disable Style/Documentation,Style/ClassAndModuleChildren
   respond_to :json
 
   private
 
-  def respond_with(resource, opts = {})
+  def respond_with(resource, _opts = {})
     token = request.env['warden-jwt_auth.token']
     headers['Authorization'] = token
     user = UserSerializer.new(resource).serializable_hash[:data][:attributes]
@@ -39,10 +39,5 @@ class Users::SessionsController < Devise::SessionsController
         message: 'Logged out failure'
       }, status: :unauthorized
     end
-  end
-
-  private
-
-  def authorize_user
   end
 end

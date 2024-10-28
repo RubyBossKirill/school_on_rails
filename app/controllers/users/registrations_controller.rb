@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class Users::RegistrationsController < Devise::RegistrationsController
+class Users::RegistrationsController < Devise::RegistrationsController # rubocop:disable Style/ClassAndModuleChildren,Style/Documentation
   respond_to :json
 
   private
 
-  def respond_with(resource, opts = {})
+  def respond_with(resource, _opts = {}) # rubocop:disable Metrics/MethodLength
     if resource.persisted?
       token = request.env['warden-jwt_auth.token']
       headers['Authorization'] = token
