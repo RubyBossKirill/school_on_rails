@@ -42,6 +42,24 @@ class EventsController < ApplicationController
   end
 
   def show
+    outcome = Events::Show.run(params)
+    if outcome.errors.present?
+      render json: {
+        status: {
+          message: "Event was failure show. #{outcome.errors.full_messages.join(', ')}"
+        }
+      }, status: :unprocessable_entity
+    else
+      render json: {
+        status: {
+          message: 'Events were successfully show.',
+          events: outcome.result.map do |event|
+            { id: event.id, name: event.name, description: event.description, price: event.price,
+              category: event.category, organization: event.organization }
+          end
+        }
+      }, status: :ok
+    end
   end
 
   def destroy
