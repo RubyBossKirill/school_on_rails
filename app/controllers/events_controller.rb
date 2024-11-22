@@ -1,36 +1,31 @@
 class EventsController < ApplicationController
   # :name, :description, :price, :category, :organization
+  # todo blueprint create and all
+  before_action :authorize_user!, only: %i[show destroy create]
   def index
   end
 
-  def new
-  end
-
-  def create
-    outcome = params.require(:event).permit(:name, :description, :price, :category, :organization)
-    event = Events::Posts::Create.run(outcome)
-    if event.errors.any?
+  def create # rubocop:disable Metrics/MethodLength
+    outcome = Events::Create.run(params)
+    if outcome.errors.present?
       render json: {
         status: {
-          message: "Event was failure created. #{event.errors.full_messages.join(', ')}"
+          message: "Event was failure created. #{outcome.errors.full_messages.join(', ')}"
         }
       }, status: :unprocessable_entity
     else
       render json: {
         status: {
           message: 'Event was successfully created.',
-          event_id: event.result.id
+          event_id: outcome.result.id
         }
       }, status: :ok
     end
   end
 
-  def edit
-  end
-
   def show
   end
 
-  def delete
+  def destroy
   end
 end
