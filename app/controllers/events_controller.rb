@@ -7,13 +7,13 @@ class EventsController < ApplicationController
     if outcome.errors.present?
       render json: {
         status: {
-          message: "Event was failure index. #{outcome.errors.full_messages.join(', ')}"
+          message: "Events fetching failed. #{outcome.errors.full_messages.join(', ')}"
         }
       }, status: :unprocessable_entity
     else
       render json: {
         status: {
-          message: 'Event was successfully index.',
+          message: 'Events were successfully fetched.',
           events: outcome.result.map do |event|
             { id: event.id, name: event.name, description: event.description, price: event.price,
               category: event.category, organization: event.organization }
