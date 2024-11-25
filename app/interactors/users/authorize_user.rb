@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 class Users::AuthorizeUser < ActiveInteraction::Base # rubocop:disable Style/ClassAndModuleChildren,Style/Documentation
-  string :token
+  hash :headers
   def execute
-    return errors.add(:token, 'Invalid token user') unless token.present?
+    puts headers
+    return errors.add(:headers, 'Authorization header is missing') unless headers['Authorization'].present?
+
+    token = headers['Authorization']
+    return errors.add(:token, 'Invalid token') unless token.present?
 
     user = User.find_by(token: token)
-    return errors.add(:user, 'Invalid user not found') unless user
+    return errors.add(:user, 'User not found') unless user
 
     user
   end

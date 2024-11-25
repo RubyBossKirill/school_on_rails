@@ -1,4 +1,4 @@
-class EventsController < ApplicationController
+class Api::V1::EventsController < ApplicationController
   # :name, :description, :price, :category, :organization
   # todo blueprint create and all
   before_action :authorize_user!, only: %i[show destroy create]
@@ -52,7 +52,7 @@ class EventsController < ApplicationController
     else
       render json: {
         status: {
-          message: 'Events were successfully show.',
+          message: 'Event were successfully show.',
           events: outcome.result.map do |event|
             { id: event.id, name: event.name, description: event.description, price: event.price,
               category: event.category, organization: event.organization }
@@ -63,5 +63,19 @@ class EventsController < ApplicationController
   end
 
   def destroy
+    outcome = Events::Destroy.run(params)
+    if outcome.errors.present?
+      render json: {
+        status: {
+          message: "Event #{params[:id]} was failure destroy. #{outcome.errors.full_messages.join(', ')}"
+        }
+      }, status: :unprocessable_entity
+    else
+      render json: {
+        status: {
+          message: "Event #{params[:id]} was successfully destroy."
+        }
+      }, status: :ok
+    end
   end
 end

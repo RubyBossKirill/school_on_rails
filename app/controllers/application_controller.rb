@@ -1,10 +1,12 @@
 class ApplicationController < ActionController::API
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  protected
-
   def authorize_user!
-    outcome = Users::AuthorizeUser.run(params)
+    authorization_header = request.headers['HTTP_AUTHORIZATION']
+
+    outcome = Users::AuthorizeUser.run(
+      headers: { 'Authorization' => authorization_header }
+    )
 
     render_resource_errors(outcome) if outcome.errors.present?
   end
