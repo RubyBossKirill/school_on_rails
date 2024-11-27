@@ -1,8 +1,8 @@
 class Api::V1::EventsController < ApplicationController
   # :name, :description, :price, :category, :organization
   # todo blueprint create and all
-  before_action :authenticate_user!, only: %i[show destroy create]
-  before_action :find_event, only: %i[show destroy]
+  before_action :authenticate_user!, only: %i[show destroy create update]
+  before_action :find_event, only: %i[show destroy update]
 
   def index # rubocop:disable Metrics/MethodLength
     outcome = Events::Index.run
@@ -56,6 +56,24 @@ class Api::V1::EventsController < ApplicationController
         message: "Event #{params[:id]} was successfully destroy."
       }
     }, status: :ok
+  end
+
+  def update
+    outcome = Events::Update.run(params.merge!(event: @event))
+    if outcome.errors.present?
+      render json: {
+        status: {
+          message: "Event was failure update. #{outcome.errors.full_messages.join(', ')}"
+        }
+      }, status: :unprocessable_entity
+    else
+      render json: {
+        status: {
+          message: "Event #{@event.id} was update",
+          event: outcome.result
+        }
+      }, status: :ok
+    end
   end
 
   private

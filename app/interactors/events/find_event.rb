@@ -4,6 +4,6 @@ class Events::FindEvent < ActiveInteraction::Base # rubocop:disable Style/ClassA
   string :id
   # TODO: настроить эрорсы
   def execute
-    event = Event.find_by(id:)
+    Event.find_by(id:)
   end
 end
