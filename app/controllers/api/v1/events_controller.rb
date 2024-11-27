@@ -2,7 +2,9 @@ class Api::V1::EventsController < ApplicationController
   # :name, :description, :price, :category, :organization
   # todo blueprint create and all
   before_action :authenticate_user!, only: %i[show destroy create]
-  def index
+  before_action :find_event, only: %i[show destroy]
+
+  def index # rubocop:disable Metrics/MethodLength
     outcome = Events::Index.run
     if outcome.errors.present?
       render json: {
@@ -21,7 +23,7 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def create # rubocop:disable Metrics/MethodLength
-    outcome = Events::Create.run(params)
+    outcome = Events::Create.run(params.merge!(user_id: current_user.id.to_s))
     if outcome.errors.present?
       render json: {
         status: {
@@ -39,37 +41,27 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def show
-    outcome = Events::Show.run(params)
-    if outcome.errors.present?
-      render json: {
-        status: {
-          message: "Event was failure show. #{outcome.errors.full_messages.join(', ')}"
-        }
-      }, status: :unprocessable_entity
-    else
-      render json: {
-        status: {
-          message: 'Event were successfully show.',
-          event: outcome.result
-        }
-      }, status: :ok
-    end
+    render json: {
+      status: {
+        message: 'Event were successfully show.',
+        event: @event.result
+      }
+    }, status: :ok
   end
 
   def destroy
-    outcome = Events::Destroy.run(params)
-    if outcome.errors.present?
-      render json: {
-        status: {
-          message: "Event #{params[:id]} was failure destroy. #{outcome.errors.full_messages.join(', ')}"
-        }
-      }, status: :unprocessable_entity
-    else
-      render json: {
-        status: {
-          message: "Event #{params[:id]} was successfully destroy."
-        }
-      }, status: :ok
-    end
+    @event.destroy
+    render json: {
+      status: {
+        message: "Event #{params[:id]} was successfully destroy."
+      }
+    }, status: :ok
+  end
+
+  private
+
+  def find_event
+    @event = Events::FindEvent.run!(params)
+    # в этом методе рендерить ошибки с интерактора
   end
 end

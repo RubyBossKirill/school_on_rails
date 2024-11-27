@@ -1,3 +1,5 @@
 class Event < ApplicationRecord
-  validates :name, :price, :category, :organization, presence: true
+  validates :name, :price, :organization, presence: true
+  belongs_to :category
+  belongs_to :user
 end
