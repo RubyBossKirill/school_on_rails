@@ -1,9 +1,9 @@
 class Api::V1::EventsController < ApplicationController
   # :name, :description, :price, :category, :organization
   # todo blueprint create and all
-  before_action :authorize_user!, only: %i[show destroy create]
+  before_action :authenticate_user!, only: %i[show destroy create]
   def index
-    outcome = Events::Index.run(params)
+    outcome = Events::Index.run
     if outcome.errors.present?
       render json: {
         status: {
@@ -14,10 +14,7 @@ class Api::V1::EventsController < ApplicationController
       render json: {
         status: {
           message: 'Events were successfully fetched.',
-          events: outcome.result.map do |event|
-            { id: event.id, name: event.name, description: event.description, price: event.price,
-              category: event.category, organization: event.organization }
-          end
+          events: outcome.result
         }
       }, status: :ok
     end
@@ -53,10 +50,7 @@ class Api::V1::EventsController < ApplicationController
       render json: {
         status: {
           message: 'Event were successfully show.',
-          events: outcome.result.map do |event|
-            { id: event.id, name: event.name, description: event.description, price: event.price,
-              category: event.category, organization: event.organization }
-          end
+          event: outcome.result
         }
       }, status: :ok
     end

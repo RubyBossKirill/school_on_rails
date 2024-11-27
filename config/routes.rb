@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :events, only: %i[create index update destroy] do
+      resources :events, only: %i[create index update destroy show] do
         collection do
           get :by_category, :by_date
         end
