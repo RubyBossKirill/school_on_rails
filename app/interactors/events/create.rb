@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Events::Create < ActiveInteraction::Base # rubocop:disable Style/ClassAndModuleChildren,Style/Documentation
-  string :name, :category, :organization, :user_id
+  string :name, :organization, :user_id, :category_id
   string :description, default: ''
   float :price
   def execute

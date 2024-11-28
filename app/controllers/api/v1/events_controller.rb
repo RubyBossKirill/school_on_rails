@@ -44,7 +44,7 @@ class Api::V1::EventsController < ApplicationController
     render json: {
       status: {
         message: 'Event were successfully show.',
-        event: @event.result
+        event: @event
       }
     }, status: :ok
   end

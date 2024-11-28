@@ -12,6 +12,7 @@ Rails.application.routes.draw do
           get :by_category, :by_date
         end
       end
+      resources :categories
     end
   end
 

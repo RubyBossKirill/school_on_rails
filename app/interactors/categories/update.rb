@@ -1,4 +1,4 @@
-class Events::Update < ActiveInteraction::Base
+class Categories::Update < ActiveInteraction::Base
   object :category, class: Category
   string :name
 

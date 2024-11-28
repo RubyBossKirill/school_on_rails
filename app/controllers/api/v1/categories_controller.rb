@@ -1,4 +1,4 @@
-class Api::V1::CategoryController < ApplicationController
+class Api::V1::CategoriesController < ApplicationController
   before_action :authenticate_user!, only: %i[show destroy create update]
   before_action :find_category, only: %i[show destroy update]
 
@@ -6,7 +6,7 @@ class Api::V1::CategoryController < ApplicationController
     render json: {
       status: {
         message: 'Category were successfully show.',
-        category: @category.result
+        category: @category
       }
     }, status: :ok
   end
