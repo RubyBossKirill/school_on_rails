@@ -3,12 +3,9 @@ class Api::V1::CategoriesController < ApplicationController
   before_action :find_category, only: %i[show destroy update]
 
   def show
-    render json: {
-      status: {
-        message: 'Category were successfully show.',
-        category: @category
-      }
-    }, status: :ok
+    render json: { 'success' => true,
+                   'result': Categories::CategoryBlueprint.render(@category, view: :base) },
+           status: :ok
   end
 
   def create
@@ -20,12 +17,9 @@ class Api::V1::CategoriesController < ApplicationController
         }
       }, status: :unprocessable_entity
     else
-      render json: {
-        status: {
-          message: 'Category was successfully created.',
-          category_id: outcome.result.id
-        }
-      }, status: :ok
+      render json: { 'success' => true,
+                     'result': Categories::CategoryBlueprint.render(outcome, view: :base) },
+             status: :ok
     end
   end
 
@@ -38,12 +32,9 @@ class Api::V1::CategoriesController < ApplicationController
         }
       }, status: :unprocessable_entity
     else
-      render json: {
-        status: {
-          message: 'Category were successfully fetched.',
-          events: outcome.result
-        }
-      }, status: :ok
+      render json: { 'success' => true,
+                     'result': Categories::CategoryBlueprint.render(outcome, view: :base) },
+             status: :ok
     end
   end
 
@@ -56,12 +47,9 @@ class Api::V1::CategoriesController < ApplicationController
         }
       }, status: :unprocessable_entity
     else
-      render json: {
-        status: {
-          message: "Category #{@category.id} was update",
-          category: outcome.result
-        }
-      }, status: :ok
+      render json: { 'success' => true,
+                     'result': Categories::CategoryBlueprint.render(outcome, view: :base) },
+             status: :ok
     end
   end
 

@@ -19,6 +19,7 @@ gem 'rack-cors'
 
 # custom gems
 gem 'active_interaction'
+gem 'blueprinter'
 gem 'data_migrate'
 
 # sidekiq
