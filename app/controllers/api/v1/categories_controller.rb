@@ -4,7 +4,7 @@ class Api::V1::CategoriesController < ApplicationController
 
   def show
     render json: { 'success' => true,
-                   'result': Categories::CategoryBlueprint.render(@category, view: :base) },
+                   'result': CategoryBlueprint.render(@category, view: :base) },
            status: :ok
   end
 
@@ -18,7 +18,7 @@ class Api::V1::CategoriesController < ApplicationController
       }, status: :unprocessable_entity
     else
       render json: { 'success' => true,
-                     'result': Categories::CategoryBlueprint.render(outcome, view: :base) },
+                     'result': CategoryBlueprint.render(outcome, view: :base) },
              status: :ok
     end
   end
@@ -33,7 +33,7 @@ class Api::V1::CategoriesController < ApplicationController
       }, status: :unprocessable_entity
     else
       render json: { 'success' => true,
-                     'result': Categories::CategoryBlueprint.render(outcome, view: :base) },
+                     'result': CategoryBlueprint.render(outcome, view: :base) },
              status: :ok
     end
   end
@@ -48,7 +48,7 @@ class Api::V1::CategoriesController < ApplicationController
       }, status: :unprocessable_entity
     else
       render json: { 'success' => true,
-                     'result': Categories::CategoryBlueprint.render(outcome, view: :base) },
+                     'result': CategoryBlueprint.render(outcome, view: :base) },
              status: :ok
     end
   end

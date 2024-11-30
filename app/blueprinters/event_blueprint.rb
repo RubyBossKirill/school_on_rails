@@ -1,4 +1,4 @@
-class CreateBlueprint < Blueprinter::Base
+class EventBlueprint < Blueprinter::Base
   identifier :id
 
   view :base do

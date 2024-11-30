@@ -13,12 +13,9 @@ class Api::V1::EventsController < ApplicationController
         }
       }, status: :unprocessable_entity
     else
-      render json: {
-        status: {
-          message: 'Events were successfully fetched.',
-          events: outcome.result
-        }
-      }, status: :ok
+      render json: { 'success' => true,
+                     'result': EventBlueprint.render(outcome.result, view: :base) },
+             status: :ok
     end
   end
 
@@ -31,22 +28,16 @@ class Api::V1::EventsController < ApplicationController
         }
       }, status: :unprocessable_entity
     else
-      render json: {
-        status: {
-          message: 'Event was successfully created.',
-          event_id: outcome.result.id
-        }
-      }, status: :ok
+      render json: { 'success' => true,
+                     'result': EventBlueprint.render(outcome.result, view: :base) },
+             status: :ok
     end
   end
 
   def show
-    render json: {
-      status: {
-        message: 'Event were successfully show.',
-        event: @event
-      }
-    }, status: :ok
+    render json: { 'success' => true,
+                   'result': EventBlueprint.render(@event, view: :base) },
+           status: :ok
   end
 
   def destroy
@@ -67,12 +58,9 @@ class Api::V1::EventsController < ApplicationController
         }
       }, status: :unprocessable_entity
     else
-      render json: {
-        status: {
-          message: "Event #{@event.id} was update",
-          event: outcome.result
-        }
-      }, status: :ok
+      render json: { 'success' => true,
+                     'result': EventBlueprint.render(outcome.result, view: :base) },
+             status: :ok
     end
   end
 
@@ -85,12 +73,9 @@ class Api::V1::EventsController < ApplicationController
         }
       }, status: :unprocessable_entity
     else
-      render json: {
-        status: {
-          message: 'Events success by category',
-          events: outcome.result
-        }
-      }, status: :ok
+      render json: { 'success' => true,
+                     'result': EventBlueprint.render(outcome.result, view: :base) },
+             status: :ok
     end
   end
 
@@ -103,12 +88,9 @@ class Api::V1::EventsController < ApplicationController
         }
       }, status: :unprocessable_entity
     else
-      render json: {
-        status: {
-          message: 'Events success by category',
-          events: outcome.result
-        }
-      }, status: :ok
+      render json: { 'success' => true,
+                     'result': EventBlueprint.render(outcome.result, view: :base) },
+             status: :ok
     end
   end
 
