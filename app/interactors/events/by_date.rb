@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Events::ByDate < ActiveInteraction::Base # rubocop:disable Style/ClassAndModuleChildren,Style/Documentation
-  string :from_date, :to_date
+  date :from_date, :to_date
   def execute
-    Event.where(category: category_id)
+    Event.where('from_date <= ? AND to_date >= ?', to_date, from_date)
   end
 end

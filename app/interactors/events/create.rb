@@ -3,6 +3,7 @@
 class Events::Create < ActiveInteraction::Base # rubocop:disable Style/ClassAndModuleChildren,Style/Documentation
   string :name, :organization, :user_id, :category_id
   string :description, default: ''
+  date :from_date, :to_date
   float :price
   def execute
     event = Event.new(inputs.to_h.compact)

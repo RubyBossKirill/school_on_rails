@@ -95,6 +95,21 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def by_date
+    outcome = Events::ByDate.run(params)
+    if outcome.errors.present?
+      render json: {
+        status: {
+          message: "Event was failure by category. #{outcome.errors.full_messages.join(', ')}"
+        }
+      }, status: :unprocessable_entity
+    else
+      render json: {
+        status: {
+          message: 'Events success by category',
+          events: outcome.result
+        }
+      }, status: :ok
+    end
   end
 
   private
