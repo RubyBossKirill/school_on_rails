@@ -69,6 +69,14 @@ class Api::V1::CategoriesController < ApplicationController
 
   def find_category
     @category = Categories::FindCategory.run!(params)
-    # в этом методе рендерить ошибки с интерактора
+
+    if @category.errors.present? # rubocop:disable Style/GuardClause
+      render json: {
+        status: {
+          message: 'Find event not found',
+          errors: render_resource_errors(@category)
+        }
+      }, status: :unprocessable_entity
+    end
   end
 end

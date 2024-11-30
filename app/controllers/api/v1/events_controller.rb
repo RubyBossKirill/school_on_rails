@@ -103,6 +103,14 @@ class Api::V1::EventsController < ApplicationController
 
   def find_event
     @event = Events::FindEvent.run!(params)
-    # в этом методе рендерить ошибки с интерактора
+
+    if @event.errors.present? # rubocop:disable Style/GuardClause
+      render json: {
+        status: {
+          message: 'Find event not found',
+          errors: render_resource_errors(@event)
+        }
+      }, status: :unprocessable_entity
+    end
   end
 end
