@@ -13,7 +13,8 @@ class Api::V1::CategoriesController < ApplicationController
     if outcome.errors.present?
       render json: {
         status: {
-          message: "Category was failure created. #{outcome.errors.full_messages.join(', ')}"
+          message: 'Category was failure created.',
+          errors: render_resource_errors(outcome)
         }
       }, status: :unprocessable_entity
     else
@@ -28,7 +29,8 @@ class Api::V1::CategoriesController < ApplicationController
     if outcome.errors.present?
       render json: {
         status: {
-          message: "Category fetching failed. #{outcome.errors.full_messages.join(', ')}"
+          message: 'Category fetching failed.',
+          errors: render_resource_errors(outcome)
         }
       }, status: :unprocessable_entity
     else
@@ -43,7 +45,8 @@ class Api::V1::CategoriesController < ApplicationController
     if outcome.errors.present?
       render json: {
         status: {
-          message: "Category was failure update. #{outcome.errors.full_messages.join(', ')}"
+          message: 'Category was failure update.',
+          errors: render_resource_errors(outcome)
         }
       }, status: :unprocessable_entity
     else

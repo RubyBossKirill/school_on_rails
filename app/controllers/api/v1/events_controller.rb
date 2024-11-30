@@ -9,7 +9,8 @@ class Api::V1::EventsController < ApplicationController
     if outcome.errors.present?
       render json: {
         status: {
-          message: "Events fetching failed. #{outcome.errors.full_messages.join(', ')}"
+          message: 'Events fetching failed.',
+          errors: render_resource_errors(outcome)
         }
       }, status: :unprocessable_entity
     else
@@ -24,7 +25,8 @@ class Api::V1::EventsController < ApplicationController
     if outcome.errors.present?
       render json: {
         status: {
-          message: "Event was failure created. #{outcome.errors.full_messages.join(', ')}"
+          message: 'Event was failure created.',
+          errors: render_resource_errors(outcome)
         }
       }, status: :unprocessable_entity
     else
@@ -54,7 +56,8 @@ class Api::V1::EventsController < ApplicationController
     if outcome.errors.present?
       render json: {
         status: {
-          message: "Event was failure update. #{outcome.errors.full_messages.join(', ')}"
+          message: 'Event was failure update.',
+          errors: render_resource_errors(outcome)
         }
       }, status: :unprocessable_entity
     else
@@ -69,7 +72,8 @@ class Api::V1::EventsController < ApplicationController
     if outcome.errors.present?
       render json: {
         status: {
-          message: "Event was failure by category. #{outcome.errors.full_messages.join(', ')}"
+          message: 'Event was failure by category.',
+          errors: render_resource_errors(outcome)
         }
       }, status: :unprocessable_entity
     else
@@ -84,7 +88,8 @@ class Api::V1::EventsController < ApplicationController
     if outcome.errors.present?
       render json: {
         status: {
-          message: "Event was failure by category. #{outcome.errors.full_messages.join(', ')}"
+          message: 'Event was failure by date.',
+          errors: render_resource_errors(outcome)
         }
       }, status: :unprocessable_entity
     else
