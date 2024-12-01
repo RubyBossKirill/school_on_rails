@@ -10,50 +10,26 @@ class Api::V1::CategoriesController < ApplicationController
 
   def create
     outcome = Categories::Create.run(params.merge!(user_id: current_user.id.to_s))
-    if outcome.errors.present?
-      render json: {
-        status: {
-          message: 'Category was failure created.',
-          errors: render_resource_errors(outcome)
-        }
-      }, status: :unprocessable_entity
-    else
-      render json: { 'success' => true,
-                     'result': CategoryBlueprint.render(outcome, view: :base) },
-             status: :ok
-    end
+    render_resource_errors(outcome) if outcome.errors.present?
+    render json: { 'success' => true,
+                   'result': CategoryBlueprint.render(outcome, view: :base) },
+           status: :ok
   end
 
   def index
     outcome = Categories::Index.run
-    if outcome.errors.present?
-      render json: {
-        status: {
-          message: 'Category fetching failed.',
-          errors: render_resource_errors(outcome)
-        }
-      }, status: :unprocessable_entity
-    else
-      render json: { 'success' => true,
-                     'result': CategoryBlueprint.render(outcome, view: :base) },
-             status: :ok
-    end
+    render_resource_errors(outcome) if outcome.errors.present?
+    render json: { 'success' => true,
+                   'result': CategoryBlueprint.render(outcome, view: :base) },
+           status: :ok
   end
 
   def update
     outcome = Categories::Update.run(params.merge!(category: @category))
-    if outcome.errors.present?
-      render json: {
-        status: {
-          message: 'Category was failure update.',
-          errors: render_resource_errors(outcome)
-        }
-      }, status: :unprocessable_entity
-    else
-      render json: { 'success' => true,
-                     'result': CategoryBlueprint.render(outcome, view: :base) },
-             status: :ok
-    end
+    render_resource_errors(outcome) if outcome.errors.present?
+    render json: { 'success' => true,
+                   'result': CategoryBlueprint.render(outcome, view: :base) },
+           status: :ok
   end
 
   def destroy
@@ -70,13 +46,6 @@ class Api::V1::CategoriesController < ApplicationController
   def find_category
     @category = Categories::FindCategory.run!(params)
 
-    if @category.errors.present? # rubocop:disable Style/GuardClause
-      render json: {
-        status: {
-          message: 'Find event not found',
-          errors: render_resource_errors(@category)
-        }
-      }, status: :unprocessable_entity
-    end
+    render_resource_errors(@category) if @category.errors.present?
   end
 end
