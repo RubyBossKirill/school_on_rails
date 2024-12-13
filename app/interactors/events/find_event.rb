@@ -4,6 +4,9 @@ class Events::FindEvent < ActiveInteraction::Base # rubocop:disable Style/ClassA
   string :id
   # TODO: настроить эрорсы
   def execute
-    Event.find_by(id:)
+    event = Event.find_by(id:)
+    return errors.add(:id, 'id not found') unless event
+
+    event
   end
 end

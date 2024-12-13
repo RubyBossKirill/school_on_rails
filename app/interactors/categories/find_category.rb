@@ -4,6 +4,9 @@ class Categories::FindCategory < ActiveInteraction::Base # rubocop:disable Style
   string :id
   # TODO: настроить эрорсы
   def execute
-    Category.find_by(id:)
+    category = Category.find_by(id:)
+    return errors.add(:id, 'id not found') unless category
+
+    category
   end
 end
