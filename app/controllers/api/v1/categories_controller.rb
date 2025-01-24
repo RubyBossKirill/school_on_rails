@@ -12,7 +12,7 @@ class Api::V1::CategoriesController < ApplicationController
     outcome = Categories::Create.run(params.merge!(user_id: current_user.id.to_s))
     render_resource_errors(outcome) if outcome.errors.present?
     render json: { 'success' => true,
-                   'result': CategoryBlueprint.render(outcome, view: :base) },
+                   'result': CategoryBlueprint.render(outcome.result, view: :base) },
            status: :ok
   end
 
@@ -20,7 +20,7 @@ class Api::V1::CategoriesController < ApplicationController
     outcome = Categories::Index.run
     render_resource_errors(outcome) if outcome.errors.present?
     render json: { 'success' => true,
-                   'result': CategoryBlueprint.render(outcome, view: :base) },
+                   'result': CategoryBlueprint.render(outcome.result, view: :base) },
            status: :ok
   end
 
@@ -28,7 +28,7 @@ class Api::V1::CategoriesController < ApplicationController
     outcome = Categories::Update.run(params.merge!(category: @category))
     render_resource_errors(outcome) if outcome.errors.present?
     render json: { 'success' => true,
-                   'result': CategoryBlueprint.render(outcome, view: :base) },
+                   'result': CategoryBlueprint.render(outcome.result, view: :base) },
            status: :ok
   end
 
@@ -44,8 +44,9 @@ class Api::V1::CategoriesController < ApplicationController
   private
 
   def find_category
-    @category = Categories::FindCategory.run!(params)
+    outcome = Categories::FindCategory.run(params)
 
-    render_resource_errors(@category) if @category.errors.present?
+    render_resource_errors(outcome) if outcome.errors.present?
+    @category = outcome.result
   end
 end

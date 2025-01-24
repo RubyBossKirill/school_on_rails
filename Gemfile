@@ -46,6 +46,3 @@ group :test do
   gem 'dox'
   gem 'webmock'
 end
-
-group :development do
-end
